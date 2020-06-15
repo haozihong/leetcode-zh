@@ -1,5 +1,4 @@
-/leet_cpp.exe
-/leet_cpp.o
-/leet_cpp_tools.o
+*.exe
+*.o
 /temp
 /__pycache__
