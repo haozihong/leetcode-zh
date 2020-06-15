@@ -1,0 +1,59 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558 
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "options": {
+        "cwd": "${fileDirname}"
+    },
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "leet_cpp build (debug)",
+            "command": "g++",
+            "args": [
+                "-std=c++14",
+                "-g",
+                "${fileBasenameNoExtension}.o",
+                "leet_cpp_tools.o",
+                "-o",
+                "${fileBasenameNoExtension}.exe"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": ["leet_cpp.o compile", "leet_cpp_tools.o compile"]
+        },
+        {
+            "type": "shell",
+            "label": "leet_cpp.o compile",
+            "command": "g++",
+            "args": [
+                "-std=c++14",
+                "-c",
+                "${fileBasename}",
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "leet_cpp_tools.o compile",
+            "command": "g++",
+            "args": [
+                "-std=c++14",
+                "-c",
+                "leet_cpp_tools.cpp",
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        }
+    ]
+}
