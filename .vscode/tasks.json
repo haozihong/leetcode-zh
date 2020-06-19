@@ -7,6 +7,9 @@
             "label": "leet_cpp make ",
             "type": "shell",
             "command": "mingw32-make",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
             "problemMatcher": [
                 "$gcc"
             ],
@@ -22,10 +25,32 @@
             "args": [
                 "clean"
             ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
             "group": "build",
             "problemMatcher": [
                 "$gcc"
             ]
+        },
+        {
+            "type": "shell",
+            "label": "C/C++: g++.exe build active file",
+            "command": "g++",
+            "args": [
+                "-std=c++2a",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
         }
     ]
 }

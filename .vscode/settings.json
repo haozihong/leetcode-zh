@@ -1,4 +1,4 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled",
-    "python.formatting.provider": "yapf"
+    "python.formatting.provider": "yapf",
+    "python.autoComplete.extraPaths": ["./python"]
 }

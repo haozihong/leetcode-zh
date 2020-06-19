@@ -1,4 +1,4 @@
 *.exe
 *.o
 /temp
-/__pycache__
+__pycache__
