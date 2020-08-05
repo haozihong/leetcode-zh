@@ -26,27 +26,21 @@ public:
     }
 };
 
-class Solution2 {  // DFS recursion
+class Solution {  // DFS recursion
 public:
-    void dfs(TreeNode *node, int depth, int &mn_depth) {
-        if (node == nullptr || depth >= mn_depth) return;
-        if (node->left == nullptr && node->right == nullptr) {
-            mn_depth = depth;
-            return;
-        }
-        dfs(node->left, depth + 1, mn_depth);
-        dfs(node->right, depth + 1, mn_depth);
-    }
-    
     int minDepth(TreeNode* root) {
-        if (root == nullptr) return 0;
-        int mn_depth = INT_MAX;
-        dfs(root, 1, mn_depth);
-        return mn_depth;
+        if (!root) return 0;
+        if (!root->left) {
+            return 1 + minDepth(root->right);
+        } else if (!root->right) {
+            return 1 + minDepth(root->left);
+        } else {
+            return 1 + min(minDepth(root->left), minDepth(root->right));
+        }
     }
 };
 
-class Solution {  // DFS iteration
+class Solution3 {  // DFS iteration
 public:
     int minDepth(TreeNode* root) {
         if (root == nullptr) return 0;
