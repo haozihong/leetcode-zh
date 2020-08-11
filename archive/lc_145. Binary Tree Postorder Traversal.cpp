@@ -1,3 +1,5 @@
+//Tree, Stack, DFS
+
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -20,7 +22,7 @@ public:
     }
 };
 
-class Solution {  //DFS iterative
+class Solution2 {  //DFS iterative1
 public:
     vector<int> postorderTraversal(TreeNode* root) {
         if (root == nullptr) return {};
@@ -38,6 +40,26 @@ public:
                 ++ci;
             }
         }
+        return ans;
+    }
+};
+
+class Solution {  //DFS iterative2
+public:
+    vector<int> postorderTraversal(TreeNode* node) {
+        vector<int> ans;
+        stack<TreeNode *> st;
+        while (node || !st.empty()) {
+            if (node) {
+                ans.push_back(node->val);
+                st.push(node);
+                node = node->right;
+            } else {
+                node = st.top()->left;
+                st.pop();
+            }
+        }
+        reverse(ans.begin(), ans.end());
         return ans;
     }
 };
