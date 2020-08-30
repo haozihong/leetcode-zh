@@ -1,3 +1,6 @@
+// Math, Union Find
+
+// 2020-08-02. 316 ms
 class UnionFind {
 private:
     int n, cnt, mx;
@@ -60,5 +63,45 @@ public:
             }
         }
         return uf.max_set_size();
+    }
+};
+
+
+// 2020-08-30. 504 ms
+// expect this to be faster, but not. 
+const int PRIME[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313};
+
+class Solution {
+public:
+    int largestComponentSize(vector<int>& A) {
+        unordered_map<int, int> id, cnt;
+        int mx = 1;
+        function<int(int)> fid = [&](int p) mutable {
+            return !id.count(p) ? id[p] = p : id[p] == id[id[p]] ? id[p] : id[p] = fid(id[p]); 
+        };
+        for (auto x : A) {
+            if (x == 1) continue;
+            int f1 = -1;
+            for (auto p : PRIME) {
+                if (p > x) break;
+                if (x % p == 0) {
+                    if (f1 == -1) {
+                        fid(f1 = p);
+                    } else if (fid(p) != fid(f1)) {
+                        cnt[fid(f1)] += cnt[fid(p)];
+                        id[fid(p)] = fid(f1);
+                    }
+                    while (x % p == 0) x /= p;
+                }
+            }
+            if (f1 == -1) {  // x is a prime larger than 100000^.5
+                fid(f1 = x);
+            } else if (x > 1 && fid(x) != fid(f1)){
+                cnt[fid(f1)] += cnt[fid(x)];
+                id[fid(x)] = fid(f1);
+            }
+            mx = max(mx, ++cnt[fid(f1)]);
+        }
+        return mx;
     }
 };
