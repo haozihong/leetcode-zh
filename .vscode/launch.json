@@ -12,7 +12,7 @@
       "console": "integratedTerminal"
     },
     {
-      "name": "(gdb) 启动",
+      "name": "(C++) gdb启动",
       "type": "cppdbg",
       "request": "launch",
       "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "name": "g++.exe - 生成和调试活动文件",
+      "name": "(C++20) 生成 调试",
       "type": "cppdbg",
       "request": "launch",
       "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
@@ -50,7 +50,28 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "C/C++: g++.exe build active file"
+      "preLaunchTask": "C++20: g++ build active file"
+    },
+    {
+      "name": "(C++14) 生成 调试",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:\\msys64\\mingw64\\bin\\gdb.exe",
+      "setupCommands": [
+        {
+          "description": "为 gdb 启用整齐打印",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "C++14: g++ build active file"
     }
   ]
 }

@@ -35,10 +35,29 @@
         },
         {
             "type": "shell",
-            "label": "C/C++: g++.exe build active file",
+            "label": "C++20: g++ build active file",
             "command": "g++",
             "args": [
                 "-std=c++2a",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "C++14: g++ build active file",
+            "command": "g++",
+            "args": [
+                "-std=c++14",
                 "-g",
                 "${file}",
                 "-o",
