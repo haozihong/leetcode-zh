@@ -161,6 +161,17 @@ void prettyPrintTree(TreeNode* node, string prefix = "", bool isLeft = true) {
     }
 }
 
+ListNode *listIter(ListNode *p, int n) {
+    while (n-- && p != nullptr) p = p->next;
+    return p;
+}
+
+ListNode *listEnd(ListNode *p) {
+    if (p == nullptr) return nullptr;
+    while (p->next != nullptr) p = p->next;
+    return p;
+}
+
 /* int main() {
     string line;
     while (getline(cin, line)) {

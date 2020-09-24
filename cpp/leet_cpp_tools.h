@@ -126,4 +126,9 @@ inline void print_vector<std::string>(const std::vector<std::string> &v) {
     for_each(v.begin(), v.end(), [](const std::string& n) {std::cout << n << ", ";});
     std::cout << "]" << std::endl;
 }
+
+ListNode *listIter(ListNode *p, int n);
+
+ListNode *listEnd(ListNode *p);
+
 #endif //LEETCPPTOOLS_H
