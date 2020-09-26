@@ -6,9 +6,9 @@ using namespace std;
 // #define sz(x) (int)(x).size()
 // #define f first
 // #define s second
-typedef vector<int> vi;
-typedef long long ll;
-typedef pair<int, int> pii;
+using vi = vector<int>;
+using ll = long long;
+using pii = pair<int, int>;
 
 void solve() {
     

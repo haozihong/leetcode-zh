@@ -6,32 +6,61 @@ using namespace std;
 // #define sz(x) (int)(x).size()
 // #define f first
 // #define s second
-typedef vector<int> vi;
-typedef long long ll;
-typedef pair<int, int> pii;
+using vi = vector<int>;
+using ll = long long;
+using pii = pair<int, int>;
 
-int A[500001];
+constexpr int MXN = 1e5;
+int N, Q, S, K, D[MXN], Di[MXN], ans[MXN];
+unordered_map<int, vector<pair<int, int>>> Ss;
 
 void solve() {
-    int N, K;
-    cin >> N >> K;
-    int mx = 0;
-    cin >> A[0];
-    for (int i=1; i<N; ++i) {
-        cin >> A[i];
-        A[i-1] = A[i] - A[i-1];
-        mx = max(mx, A[i-1]);
+    cin >> N >> Q;
+    for (int i=0; i<N-1; ++i)
+        cin >> D[i];
+    Ss.clear();
+    for (int i=0; i<Q; ++i) {
+        cin >> S >> K;
+        if (K == 1) {
+            ans[i] = S;
+        } else {
+            Ss[S-1].emplace_back(K-1, i);
+        }
     }
-    int l = 1, r = mx, m;
-    while (l < r) {
-        m = (l + r) / 2;
-        int k = 0;
-        for (int i=0; i<N-1; ++i)
-            k += ceil((double) A[i] / m) - 1;
-        if (k <= K) r = m;
-        else l = m + 1;
+    for (auto it=Ss.begin(); it!=Ss.end(); ++it)
+        sort(it->second.begin(), it->second.end());
+    
+    iota(Di, Di + N - 1, 0);
+    sort(Di, Di + N - 1, [](int x, int y) { return D[x] > D[y]; });
+
+    for (auto it=Ss.begin(); it!=Ss.end(); ++it) {
+        int l = 0, r = N - 1, p = it->first, sti;
+        auto itk = it->second.rbegin(), itked = it->second.rend();
+        for (int i=0, d; i<N-1; ++i) {
+            d = Di[i];
+            if (d < l || d >= r) continue;
+            if (d < p) {  // [l..i]
+                sti = r - l - (d - l);
+                while (itk != itked && sti <= itk->first) {
+                    ans[itk->second] = d - (itk->first - sti) + 1;
+                    ++itk;
+                }
+                if (itk == it->second.rend()) break;
+                l = d + 1;
+            } else {  // (i..r]
+                sti = r - l - (r - d - 1);
+                while (itk != itked && sti <= itk->first) {
+                    ans[itk->second] = d + (itk->first - sti) + 2;
+                    ++itk;
+                }
+                if (itk == it->second.rend()) break;
+                r = d;
+            }
+        }
     }
-    cout << l << endl;
+
+    for (int i=0; i<Q-1; ++i) cout << ans[i] << " ";
+    cout << ans[Q-1] << endl;
 }
 
 int main() {
