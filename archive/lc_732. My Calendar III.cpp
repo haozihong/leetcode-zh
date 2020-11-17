@@ -23,6 +23,21 @@ public:
     }
 };
 
+class MyCalendarThree1 {  // slower. Boundary Count 
+public:
+    map<int, int> I;  // intervals
+    
+    MyCalendarThree() {}
+    
+    int book(int st, int ed) {
+        ++I[st]; --I[ed];
+        int k = 0, mx = 1;
+        for (auto &i : I)
+            mx = max(mx, k += i.second);
+        return mx;
+    }
+};
+
 /**
  * Your MyCalendarThree object will be instantiated and called as such:
  * MyCalendarThree* obj = new MyCalendarThree();
