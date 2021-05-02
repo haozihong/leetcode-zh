@@ -45,6 +45,46 @@ public:
     T get_val(size_t x) { return range_sum(x-1, x); }
 };
 
+struct SegTreeMax {  // range maximum. LC_699. Falling Squares
+    int n, sz;
+    vector<int> d;
+    vector<bool> b; // 0: passed down; 1: lazy tag
+    
+    SegTreeMax(int n): n(n), sz(1<<(int(ceil(log2(n)))+1)), d(sz, 0), b(sz, false) {}
+    
+    void update(int l, int r, int v, int s, int t, int p) {
+        if (l <= s && t <= r && v >= d[p]) {
+            d[p] = v;
+            b[p] = true;
+            return;
+        }
+        if (s == t) return;
+        int m = (s + t) / 2;
+        if (b[p]) {
+            d[p*2] = d[p*2+1] = d[p];
+            b[p*2] = b[p*2+1] = true;
+            b[p] = false;
+        }
+        if (l <= m) update(l, r, v, s, m, p*2);
+        if (m < r) update(l, r, v, m+1, t, p*2+1);
+        d[p] = max(d[p*2], d[p*2+1]);
+    }
+    
+    int query_range(int l, int r, int s, int t, int p) {
+        if (l <= s && t <= r) return d[p];
+        int m = (s + t) / 2;
+        if (b[p]) {
+            d[p*2] = d[p*2+1] = d[p];
+            b[p*2] = b[p*2+1] = true;
+            b[p] = false;
+        }
+        int res = INT_MIN;
+        if (l <= m) res = max(res, query_range(l, r, s, m, p*2));
+        if (m < r) res = max(res, query_range(l, r, m+1, t, p*2+1));
+        return res;
+    }
+};
+
 class Solution {
 public:
     int MOD = 1e9 + 7;
