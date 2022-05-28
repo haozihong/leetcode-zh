@@ -85,6 +85,53 @@ struct SegTreeMax {  // range maximum. LC_699. Falling Squares
     }
 };
 
+struct SegTreeSet {  // range set. LC_2158. Amount of New Area Painted Each Day
+    int s0, t0, n, sz;
+    vector<int> d, b;
+    vector<bool> v; // 0: passed down; 1: lazy tag
+    
+    SegTreeSet(int s, int t)
+        : s0(s), t0(t), n(t0 - s0 + 1),
+          sz(1<<(int(ceil(log2(n)))+1)), d(sz, 0), b(sz, 0), v(sz, false) {}
+    
+    void update(int l, int r, int c) { update(l, r, c, s0, t0, 1); }
+    
+    void update(int l, int r, int c, int s, int t, int p) {
+        if (s > t) s = s0, t = t0;
+        if (l <= s && t <= r) {
+            d[p] = (t - s + 1) * c, b[p] = c, v[p] = 1;
+            return;
+        }
+        int m = s + ((t - s) >> 1);
+        if (v[p]) {
+            d[p*2] = b[p] * (m - s + 1), d[p*2+1] = b[p] * (t - m);
+            b[p*2] = b[p*2+1] = b[p];
+            v[p*2] = v[p*2+1] = 1;
+            v[p] = 0;
+        }
+        if (l <= m) update(l, r, c, s, m, p*2);
+        if (r > m) update(l, r, c, m + 1, t, p*2+1);
+        d[p] = d[p*2] + d[p*2+1];
+    }
+    
+    int query(int l, int r) { return query(l, r, s0, t0, 1); }
+
+    int query(int l, int r, int s, int t, int p) {
+        if (l <= s && t <= r) return d[p];
+        int m = s + ((t - s) >> 1);
+        if (v[p]) {
+            d[p*2] = b[p] * (m - s + 1), d[p*2+1] = b[p] * (t - m);
+            b[p*2] = b[p*2+1] = b[p];
+            v[p*2] = v[p*2+1] = 1;
+            v[p] = 0;
+        }
+        int sum = 0;
+        if (l <= m) sum = query(l, r, s, m, p*2);
+        if (r > m) sum += query(l, r, m + 1, t, p*2+1);
+        return sum;
+    }
+};
+
 class Solution {
 public:
     int MOD = 1e9 + 7;
