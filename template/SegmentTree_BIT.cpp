@@ -46,11 +46,15 @@ public:
 };
 
 struct SegTreeMax {  // range maximum. LC_699. Falling Squares
-    int n, sz;
+    int s0, t0, n, sz;
     vector<int> d;
     vector<bool> b; // 0: passed down; 1: lazy tag
     
-    SegTreeMax(int n): n(n), sz(1<<(int(ceil(log2(n)))+1)), d(sz, 0), b(sz, false) {}
+    SegTreeMax(int s, int t)
+        : s0(s), t0(t), n(t0 - s0 + 1),
+          sz(1<<(int(ceil(log2(n)))+1)), d(sz, 0), b(sz, false) {}
+    
+    void update(int l, int r, int c) { update(l, r, c, s0, t0, 1); }
     
     void update(int l, int r, int v, int s, int t, int p) {
         if (l <= s && t <= r && v >= d[p]) {
@@ -70,7 +74,9 @@ struct SegTreeMax {  // range maximum. LC_699. Falling Squares
         d[p] = max(d[p*2], d[p*2+1]);
     }
     
-    int query_range(int l, int r, int s, int t, int p) {
+    int query(int l, int r) { return query(l, r, s0, t0, 1); }
+    
+    int query(int l, int r, int s, int t, int p) {
         if (l <= s && t <= r) return d[p];
         int m = (s + t) / 2;
         if (b[p]) {
@@ -79,8 +85,8 @@ struct SegTreeMax {  // range maximum. LC_699. Falling Squares
             b[p] = false;
         }
         int res = INT_MIN;
-        if (l <= m) res = max(res, query_range(l, r, s, m, p*2));
-        if (m < r) res = max(res, query_range(l, r, m+1, t, p*2+1));
+        if (l <= m) res = max(res, query(l, r, s, m, p*2));
+        if (m < r) res = max(res, query(l, r, m+1, t, p*2+1));
         return res;
     }
 };
