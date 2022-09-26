@@ -1,18 +1,18 @@
 class UnionFind:
     def __init__(self, n):
-        self.id = list(range(n))
+        self.pa = list(range(n))
         self.sz, self.count = [1] * n, n
 
     def find(self, p):
-        if self.id[p] != p: self.id[p] = self.find(self.id[p])
-        return self.id[p]
+        if self.pa[p] != p: self.pa[p] = self.find(self.pa[p])
+        return self.pa[p]
     
     def union(self, p, q):
-        i, j = self.find(p), self.find(q)
-        if i == j: return
-        if self.sz[i] < self.sz[j]: i, j = j, i
-        self.id[j] = i
-        self.sz[i] += self.sz[j]
+        pi, qi = self.find(p), self.find(q)
+        if pi == qi: return
+        if self.sz[pi] < self.sz[qi]: pi, qi = qi, pi
+        self.pa[qi] = pi
+        self.sz[pi] += self.sz[qi]
         self.count -= 1
         
     def compare(self, p, q):
