@@ -17,7 +17,26 @@ class UnionFind:
         
     def compare(self, p, q):
         return self.find(p) == self.find(q)
+
+# 每次必向右合并。用于跳过一段范围
+# 2612. Minimum Reverse Operations
+class UnionFindRight:
+    def __init__(self, n):
+        self.pa = list(range(n))
+
+    def find(self, p):
+        if self.pa[p] != p: self.pa[p] = self.find(self.pa[p])
+        return self.pa[p]
     
+    def union(self, p, q):
+        pi, qi = self.find(p), self.find(q)
+        if pi == qi: return
+        if pi < qi: pi, qi = qi, pi
+        self.pa[qi] = pi
+        
+    def compare(self, p, q):
+        return self.find(p) == self.find(q)
+
 class Solution:
     def findCriticalAndPseudoCriticalEdges(self, n: int, edges: List[List[int]]) -> List[List[int]]:
         se = sorted(enumerate(edges), key=lambda x: x[1][2])
