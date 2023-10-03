@@ -7,3 +7,20 @@ def isprime(x):
         if p * p > x: break
         if x % p == 0: return False
     return True
+
+# LC 204. Count Primes.
+def primes_under(n):  # return primes <= n
+    primes, is_prime = [], [True] * (n + 1)
+    for i in range(2, n + 1):
+        if is_prime[i]: primes.append(i)
+        for p in primes:
+            if i * p > n: break
+            is_prime[i*p] = False
+            if i % p == 0: break
+    return primes
+
+P = primes_under(5 * 10**6)
+
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        return bisect_left(P, n)
