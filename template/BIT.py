@@ -1,3 +1,4 @@
+# Fenwick tree or binary indexed tree (BIT)
 class BIT:
     '''BIT of a[1..n], 1-based indexing'''
 
@@ -44,3 +45,43 @@ class Solution:
             res = (res + min(b.prefix_sum(x-1), i - b.prefix_sum(x))) % (10**9+7)
             b.add(x)
         return res
+
+
+class BITMax:
+    '''BIT of a[1..n], 1-based indexing'''
+
+    def __init__(self, n, arr=None):
+        self.n, self.c = n, [0] * (n + 1)
+    
+    def lowbit(x): return x & -x
+
+    def update(self, p, v):
+        '''1-based indexing'''
+        while p <= self.n:
+            self.c[p] = max(self.c[p], v)
+            p += BITMax.lowbit(p)
+
+    def query(self, r):
+        '''max of a[1..r], 1-based indexing'''
+        res = 0
+        while r > 0:
+            res = max(res, self.c[r])
+            r -= BITMax.lowbit(r)
+        return res
+
+# 3915. Maximum Sum of Alternating Subsequence With Distance at Least K
+class Solution:
+    def maxAlternatingSum(self, A: list[int], k: int) -> int:
+        n = len(A)
+        mxx = max(A)
+        b, brev = BITMax(mxx), BITMax(mxx) # reversed x
+        up, down = A[:], A[:] # last goes up/down
+        for i, x in enumerate(A):
+            j = i - k
+            if j < 0: continue
+            y, yrev = A[j], mxx - A[j] + 1
+            b.update(y, down[j])
+            brev.update(yrev, up[j])
+            up[i] = max(up[i], b.query(x-1) + x)
+            down[i] = max(down[i], brev.query(mxx-(x+1)+1) + x)
+        return max(chain(up, down)
